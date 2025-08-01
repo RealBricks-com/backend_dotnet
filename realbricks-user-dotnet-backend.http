@@ -1,0 +1,6 @@
+@realbricks_user_dotnet_backend_HostAddress = http://localhost:5099
+
+GET {{realbricks_user_dotnet_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
