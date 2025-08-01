@@ -25,9 +25,6 @@
     <ItemGroup>
       <Folder Include="Data\" />
       <Folder Include="Dtos\DistrictDtos\" />
-      <Folder Include="Dtos\ProjectAmenityDtos\" />
-      <Folder Include="Dtos\ProjectSpecificationDtos\" />
-      <Folder Include="Dtos\ProjectUnitDtos\" />
       <Folder Include="Dtos\StateDtos\" />
       <Folder Include="Dtos\SubDistrictDtos\" />
       <Folder Include="Dtos\UserAuthDtos\" />

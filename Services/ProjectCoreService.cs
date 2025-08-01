@@ -41,4 +41,34 @@ public class ProjectCoreService
 
         return result;
     }
+
+
+    public async Task<List<ProjectCoreCardDto>> GetProjectCards()
+    {
+        return await _context.ProjectCores
+            .Include(p => p.Developer)
+            .Include(p => p.Area)
+            .Include(p => p.ProjectMedia)
+            .ProjectTo<ProjectCoreCardDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+
+    }
+
+
+    public async Task<ProjectFullDto> GetProjectFullDtos(int ProjectId)
+    {
+        return await _context.ProjectCores
+            .Include(p => p.Area)
+            .Include(p => p.Developer)
+            .Include(p => p.ProjectMedia)
+            .Include(p => p.ProjectAmenities)
+            .ThenInclude(pa => pa.Amenity) // 🔥 This is critical!
+            .Include(p => p.ProjectLegalDocuments)
+            .Include(p => p.ProjectSpecifications)
+            .Include(p => p.ProjectUnits)
+            .Include(p => p.ProjectNearbyLocations)
+            .Where(p => p.ProjectId == ProjectId)
+            .ProjectTo<ProjectFullDto>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync();
+    }
 }

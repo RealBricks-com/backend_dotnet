@@ -24,6 +24,7 @@ builder.Services.AddScoped<VwUnitAvailabilityService>();
 builder.Services.AddScoped<LeadService>();
 builder.Services.AddScoped<ProjectLegalDocumentService>();
 builder.Services.AddScoped<ProjectNearbyLocationService>();
+builder.Services.AddScoped<ProjectSpecificationService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

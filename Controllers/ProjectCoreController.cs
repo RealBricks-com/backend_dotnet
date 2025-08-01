@@ -24,7 +24,21 @@ public class ProjectCoreController : ControllerBase
     }
     
     // methods --
+
+
     [HttpGet]
+    public async Task<List<ProjectCoreCardDto>> GetProjectCards()
+    {
+        return  await _service.GetProjectCards();
+    }
+
+    [HttpGet("/page/{id:int}")]
+    public async Task<ProjectFullDto> GetProjectFullDtos(int id)
+    {
+        return await _service.GetProjectFullDtos(id);
+    }
+    
+    [HttpGet("projects")]
     [ResponseCache(CacheProfileName = "DefaultCache")]
     public async Task<IList<ProjectCore>> GetProjects()
     {
