@@ -21,9 +21,10 @@ public class LeadController : ControllerBase
     // action methods
 
     [HttpPost("sendenquiry")]
-    public async Task<LeadResponseDto> SendEnquiry([FromQuery] int projectId, [FromQuery] LeadCreateDto leadDto)
+    public async Task<ActionResult<LeadResponseDto>> SendEnquiry([FromBody] LeadCreateDto leadDto)
     {
-        return await _leadService.SendEnquiry(leadDto);
+        var response = await _leadService.SendEnquiry(leadDto);
+        return Ok(response);
     }
     
     

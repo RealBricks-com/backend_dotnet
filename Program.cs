@@ -25,6 +25,7 @@ builder.Services.AddScoped<LeadService>();
 builder.Services.AddScoped<ProjectLegalDocumentService>();
 builder.Services.AddScoped<ProjectNearbyLocationService>();
 builder.Services.AddScoped<ProjectSpecificationService>();
+builder.Services.AddScoped<AiSearchService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -32,6 +33,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddResponseCaching(); // Enable caching services
+builder.Services.AddHttpClient();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));  
 
@@ -49,11 +51,26 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     });
 
+// 1. Add CORS service
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(
+                "http://localhost:8080",
+                "http://localhost:8082",
+                "https://myapp.com"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers(options =>
 {
     options.CacheProfiles.Add("DefaultCache", new CacheProfile
     {
-        Duration = 60,
+        Duration = 30,
         Location = ResponseCacheLocation.Any
     });
 });
@@ -70,8 +87,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
+// 2. Use the CORS policy
+app.UseCors("AllowFrontend");
 app.UseResponseCaching();
 app.UseHttpsRedirection();
 app.MapControllers();

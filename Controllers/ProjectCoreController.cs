@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using realbricks_user_dotnet_backend.Data;
 using realbricks_user_dotnet_backend.Dtos.ProjectCoreDtos;
+using realbricks_user_dotnet_backend.Dtos.ProjectFilterDto;
 using realbricks_user_dotnet_backend.Models;
 using realbricks_user_dotnet_backend.Services;
 using realbricks_user_dotnet_backend.Utilities;
@@ -25,6 +26,7 @@ public class ProjectCoreController : ControllerBase
     
     // methods --
 
+    /*
 
     [HttpGet]
     public async Task<List<ProjectCoreCardDto>> GetProjectCards()
@@ -77,6 +79,38 @@ public class ProjectCoreController : ControllerBase
         };
 
         return Ok(result);
+    }
+
+    */
+    
+    [HttpGet]
+    public async Task<ActionResult<PageResult<ProjectCoreDto>>> GetProjects([FromQuery] ProjectFilterDto filters)
+    {
+        var projects = await _service.GetProjects(filters);
+        return Ok(projects);
+    }
+
+    [HttpGet("{projectId}")]
+    public async Task<ActionResult<ProjectCoreDto>> GetProject(int projectId)
+    {
+        var project = await _service.GetProject(projectId);
+        if (project == null) return NotFound();
+        return Ok(project);
+    }
+
+    [HttpGet("cards")]
+    public async Task<ActionResult<PageResult<ProjectCoreCardDto>>> GetProjectCards([FromQuery] ProjectFilterDto filters)
+    {
+        var cards = await _service.GetProjectCards(filters);
+        return Ok(cards);
+    }
+
+    [HttpGet("full/{projectId}")]
+    public async Task<ActionResult<ProjectFullDto>> GetProjectFull(int projectId)
+    {
+        var project = await _service.GetProjectFullDtos(projectId);
+        if (project == null) return NotFound();
+        return Ok(project);
     }
 
 }
